@@ -39,8 +39,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     TextView find_location;
     LocationManager locationManager;
     int REQUEST_LOCATION = 123;
-    double latitude = 0;
-    double longitude = 0;
+    double latitude;
+    double longitude;
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) this);
         Location location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
         onLocationChanged(location);
-        getlocationname();
+        getlocationname(location);
 
         recyclerView = findViewById(R.id.rv_resttype);
         recyclerView.setHasFixedSize(true);
@@ -100,8 +100,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
     @Override
     public void onLocationChanged(Location location) {
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
+
     }
 
     @Override
@@ -119,13 +118,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
     }
 
-    private void getlocationname() {
+    private void getlocationname(Location location) {
         try {
             Geocoder geocoder = new Geocoder(this);
             List<Address> addressList = null;
-            addressList = geocoder.getFromLocation(latitude, longitude, 1);
-            String address = addressList.get(0).getFeatureName();
-            find_location.setText(address);
+            if (location != null){
+                latitude = location.getLatitude();
+                longitude = location.getLongitude();
+                addressList = geocoder.getFromLocation(latitude, longitude, 1);
+                String address = addressList.get(0).getFeatureName();
+                find_location.setText(address);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -133,7 +136,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
     @Override
     public void onItemClick(int position) {
-
+        RestType restType = restTypes.get(position);
+        Intent intent = new Intent(this, RestaurantActivity.class);
+        intent.putExtra("type", restType.getType_eng());
+        startActivity(intent);
     }
 
     public void getfoodtype() {
@@ -146,7 +152,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     RestType l = dataSnapshot1.getValue(RestType.class);
                     restTypes.add(l);
-
                 }
                 restTypeAdapter = new RestTypeAdapter(MainActivity.this, restTypes);
                 recyclerView.setAdapter(restTypeAdapter);
