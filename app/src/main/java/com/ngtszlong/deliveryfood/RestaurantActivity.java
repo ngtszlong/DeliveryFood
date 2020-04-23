@@ -46,6 +46,7 @@ public class RestaurantActivity extends AppCompatActivity  implements Restaurant
         toolbar = findViewById(R.id.tb_rest);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setTitle(type);
     }
 
     private void getrestaurant() {

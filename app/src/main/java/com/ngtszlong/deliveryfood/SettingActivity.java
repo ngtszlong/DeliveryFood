@@ -16,6 +16,7 @@ public class SettingActivity extends AppCompatActivity {
 
         toolbar = findViewById(R.id.tb_setting);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle("Account");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
