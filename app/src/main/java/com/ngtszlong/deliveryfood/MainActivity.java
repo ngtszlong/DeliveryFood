@@ -39,12 +39,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     TextView find_location;
     LocationManager locationManager;
     int REQUEST_LOCATION = 123;
-    double latitude;
-    double longitude;
+    double latitude = 0;
+    double longitude = 0;
 
     RecyclerView recyclerView;
     RecyclerView.LayoutManager layoutManager;
-    RecyclerView.Adapter adapter;
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
     public static ArrayList<RestType> restTypes;
@@ -73,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) this);
         Location location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
         onLocationChanged(location);
-        getlocationname(location);
+        getlocationname();
 
         recyclerView = findViewById(R.id.rv_resttype);
         recyclerView.setHasFixedSize(true);
@@ -120,7 +119,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
     }
 
-    private void getlocationname(Location location) {
+    private void getlocationname() {
         try {
             Geocoder geocoder = new Geocoder(this);
             List<Address> addressList = null;
