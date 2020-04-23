@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         switch (item.getItemId()) {
             case R.id.person_detail:
-                Intent intent = new Intent(this, LoginActivity.class);
+                Intent intent = new Intent(this, SettingActivity.class);
                 startActivity(intent);
             default:
                 return super.onOptionsItemSelected(item);
