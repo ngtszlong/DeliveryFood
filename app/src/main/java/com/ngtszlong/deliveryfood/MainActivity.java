@@ -5,6 +5,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.content.Context;
@@ -20,10 +22,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LocationListener {
+public class MainActivity extends AppCompatActivity implements LocationListener, RestTypeAdapter.OnItemClickLister {
     Toolbar toolbar;
     SearchView searchView;
     TextView find_location;
@@ -31,6 +41,14 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
     int REQUEST_LOCATION = 123;
     double latitude;
     double longitude;
+
+    RecyclerView recyclerView;
+    RecyclerView.LayoutManager layoutManager;
+    RecyclerView.Adapter adapter;
+    DatabaseReference databaseReference;
+    FirebaseDatabase firebaseDatabase;
+    public static ArrayList<RestType> restTypes;
+    private RestTypeAdapter restTypeAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +74,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         Location location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
         onLocationChanged(location);
         getlocationname(location);
+
+        recyclerView = findViewById(R.id.rv_resttype);
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView.setLayoutManager(layoutManager);
+        getfoodtype();
     }
 
     @Override
@@ -106,5 +130,35 @@ public class MainActivity extends AppCompatActivity implements LocationListener 
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onItemClick(int position) {
+
+    }
+
+    public void getfoodtype() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference().child("resttype");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                restTypes = new ArrayList<RestType>();
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    RestType l = dataSnapshot1.getValue(RestType.class);
+                    restTypes.add(l);
+
+                }
+                restTypeAdapter = new RestTypeAdapter(MainActivity.this, restTypes);
+                recyclerView.setAdapter(restTypeAdapter);
+                restTypeAdapter.setOnItemClickListener(MainActivity.this);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        databaseReference.keepSynced(true);
     }
 }
