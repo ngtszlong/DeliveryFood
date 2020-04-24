@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.EditText;
@@ -39,7 +40,13 @@ public class LoginDialog extends AppCompatDialogFragment {
             public void onClick(DialogInterface dialog, int which) {
                 String username = edt_email.getText().toString();
                 String password = edt_password.getText().toString();
-                listener.applyText(username, password);
+                if (TextUtils.isEmpty(username)) {
+                    edt_email.setError("You need to input your email");
+                } else if (TextUtils.isEmpty(password)) {
+                    edt_password.setError("You need to input your password");
+                } else {
+                    listener.applyText(username, password);
+                }
             }
         });
 
@@ -53,12 +60,12 @@ public class LoginDialog extends AppCompatDialogFragment {
         super.onAttach(context);
         try {
             listener = (LoginDialogListener) context;
-        }catch (ClassCastException e){
-            throw  new ClassCastException(context.toString() + "must implement LoginDialogListener");
+        } catch (ClassCastException e) {
+            throw new ClassCastException(context.toString() + "must implement LoginDialogListener");
         }
     }
 
-    public interface  LoginDialogListener{
+    public interface LoginDialogListener {
         void applyText(String email, String password);
     }
 }

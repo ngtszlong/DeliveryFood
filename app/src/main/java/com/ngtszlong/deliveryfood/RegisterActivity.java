@@ -65,11 +65,11 @@ public class RegisterActivity extends AppCompatActivity {
                 if (TextUtils.isEmpty(name)) {
                     edt_name.setError("You need to input your username");
                 } else if (TextUtils.isEmpty(email)) {
-                    edt_email.setError("You need to input your username");
+                    edt_email.setError("You need to input your email");
                 } else if (TextUtils.isEmpty(password)) {
-                    edt_phone.setError("You need to input your username");
+                    edt_phone.setError("You need to input your phone");
                 } else if (TextUtils.isEmpty(phone)) {
-                    edt_phone.setError("You need to input your username");
+                    edt_phone.setError("You need to input your phone");
                 } else {
                     progressDialog.setMessage("Registering Please Wait...");
                     progressDialog.show();

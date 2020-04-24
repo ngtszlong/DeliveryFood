@@ -67,33 +67,51 @@ public class SettingActivity extends AppCompatActivity implements LoginDialog.Lo
             });
             login.setVisibility(View.GONE);
             register.setVisibility(View.GONE);
+            account.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(SettingActivity.this, AccountActivity.class);
+                    startActivity(intent);
+
+                }
+            });
+            order.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(SettingActivity.this, OrderActivity.class);
+                    startActivity(intent);
+                }
+            });
+            address.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intent = new Intent(SettingActivity.this, AddressAcvtivity.class);
+                    startActivity(intent);
+                }
+            });
         } else {
+            account.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(SettingActivity.this, "You must login first", Toast.LENGTH_SHORT).show();
+                }
+            });
+            order.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(SettingActivity.this, "You must login first", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            address.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(SettingActivity.this, "You must login first", Toast.LENGTH_SHORT).show();
+                }
+            });
+
             logout.setVisibility(View.GONE);
         }
-
-        account.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SettingActivity.this, AccountActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        order.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SettingActivity.this, OrderActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        address.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(SettingActivity.this, AddressAcvtivity.class);
-                startActivity(intent);
-            }
-        });
 
         language.setOnClickListener(new View.OnClickListener() {
             @Override
