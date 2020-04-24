@@ -14,7 +14,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".RestaurantActivity"></activity>
+        <activity android:name=".AddressAcvtivity"></activity>
+        <activity android:name=".OrderActivity" />
+        <activity android:name=".AccountActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".RestaurantActivity" />
         <activity android:name=".SettingActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
