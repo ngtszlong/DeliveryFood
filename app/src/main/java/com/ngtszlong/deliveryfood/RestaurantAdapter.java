@@ -43,6 +43,10 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         return restaurantArrayList.size();
     }
 
+    public void setOnItemClickListener(MainActivity listener) {
+        onItemClickListener = listener;
+    }
+
     public interface OnItemClickLister {
         void onItemClick(int position);
     }

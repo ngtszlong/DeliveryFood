@@ -47,6 +47,7 @@
         android:textStyle="bold"
         android:textColor="#000000"
         android:id="@+id/txt_featured"
+        android:layout_marginLeft="15dp"
         android:textSize="20dp"
         android:text="Featured"
         android:layout_below="@id/sv_resttype"
@@ -58,7 +59,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_featured">
         <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_list"
+            android:id="@+id/rv_main_rest"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="none" />

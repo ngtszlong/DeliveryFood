@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,7 +34,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LocationListener, RestTypeAdapter.OnItemClickLister {
+public class MainActivity extends AppCompatActivity implements LocationListener, RestTypeAdapter.OnItemClickLister, RestaurantAdapter.OnItemClickLister{
     Toolbar toolbar;
     SearchView searchView;
     TextView find_location;
@@ -42,12 +43,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     double latitude;
     double longitude;
 
-    RecyclerView recyclerView;
+    RecyclerView rv_resttype;
     RecyclerView.LayoutManager layoutManager;
     DatabaseReference databaseReference;
     FirebaseDatabase firebaseDatabase;
     public static ArrayList<RestType> restTypes;
     private RestTypeAdapter restTypeAdapter;
+
+    RecyclerView rv_rest;
+    ArrayList<Restaurant> restaurants;
+    private RestaurantAdapter restaurantAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,11 +79,41 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         onLocationChanged(location);
         getlocationname(location);
 
-        recyclerView = findViewById(R.id.rv_resttype);
-        recyclerView.setHasFixedSize(true);
+        rv_resttype = findViewById(R.id.rv_resttype);
+        rv_resttype.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        recyclerView.setLayoutManager(layoutManager);
+        rv_resttype.setLayoutManager(layoutManager);
         getfoodtype();
+
+        rv_rest = findViewById(R.id.rv_main_rest);
+        rv_rest.setHasFixedSize(true);
+        rv_rest.setLayoutManager(new LinearLayoutManager(this));
+        rv_rest.setLayoutManager(new GridLayoutManager(this, 3));
+        getrest();
+    }
+
+    private void getrest() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference().child("restaurant");
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                restaurants = new ArrayList<Restaurant>();
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    Restaurant l = dataSnapshot1.getValue(Restaurant.class);
+                    restaurants.add(l);
+                }
+                restaurantAdapter = new RestaurantAdapter(MainActivity.this, restaurants);
+                rv_rest.setAdapter(restaurantAdapter);
+                restaurantAdapter.setOnItemClickListener(MainActivity.this);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        databaseReference.keepSynced(true);
     }
 
     @Override
@@ -122,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         try {
             Geocoder geocoder = new Geocoder(this);
             List<Address> addressList = null;
-            if (location != null){
+            if (location != null) {
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
                 addressList = geocoder.getFromLocation(latitude, longitude, 1);
@@ -154,7 +189,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                     restTypes.add(l);
                 }
                 restTypeAdapter = new RestTypeAdapter(MainActivity.this, restTypes);
-                recyclerView.setAdapter(restTypeAdapter);
+                rv_resttype.setAdapter(restTypeAdapter);
                 restTypeAdapter.setOnItemClickListener(MainActivity.this);
             }
 
