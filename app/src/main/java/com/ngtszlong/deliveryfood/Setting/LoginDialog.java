@@ -16,8 +16,6 @@ import androidx.appcompat.app.AppCompatDialogFragment;
 
 import com.ngtszlong.deliveryfood.R;
 
-import java.io.IOException;
-
 public class LoginDialog extends AppCompatDialogFragment {
 
     EditText edt_email;
@@ -31,13 +29,12 @@ public class LoginDialog extends AppCompatDialogFragment {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.logindialog, null);
-
-        builder.setView(view).setTitle("Login").setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setView(view).setTitle(R.string.login).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
             }
-        }).setPositiveButton("Login", new DialogInterface.OnClickListener() {
+        }).setPositiveButton(R.string.login, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String username = edt_email.getText().toString();

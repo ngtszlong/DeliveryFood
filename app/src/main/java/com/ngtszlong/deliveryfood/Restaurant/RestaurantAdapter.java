@@ -50,7 +50,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
     }
 
     public interface OnItemClickLister {
-        void onItemClick(int position);
+        void restonItemClick(int position);
     }
 
     public void setOnItemClickListener(RestaurantActivity listener) {
@@ -70,7 +70,7 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
                     if (onItemClickListener != null) {
                         int position = getAdapterPosition();
                         if (position != RecyclerView.NO_POSITION) {
-                            onItemClickListener.onItemClick(position);
+                            onItemClickListener.restonItemClick(position);
                         }
                     }
                 }

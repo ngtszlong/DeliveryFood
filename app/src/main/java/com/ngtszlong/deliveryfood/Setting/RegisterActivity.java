@@ -4,8 +4,11 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
@@ -23,6 +26,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.ngtszlong.deliveryfood.MainActivity;
 import com.ngtszlong.deliveryfood.R;
 
+import java.util.Locale;
+
 public class RegisterActivity extends AppCompatActivity {
     Toolbar toolbar;
     EditText edt_name;
@@ -39,11 +44,12 @@ public class RegisterActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LoadLocale();
         setContentView(R.layout.activity_register);
 
         toolbar = findViewById(R.id.tb_register);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Register");
+        getSupportActionBar().setTitle(R.string.register);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         edt_name = findViewById(R.id.edt_name);
@@ -108,5 +114,22 @@ public class RegisterActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return super.onSupportNavigateUp();
+    }
+
+    private void setLocale(String lang) {
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        SharedPreferences.Editor editor = getSharedPreferences("Setting", MODE_PRIVATE).edit();
+        editor.putString("My_Lang", lang);
+        editor.apply();
+    }
+
+    public void LoadLocale() {
+        SharedPreferences preferences = getSharedPreferences("Setting", Activity.MODE_PRIVATE);
+        String language = preferences.getString("My_Lang", "");
+        setLocale(language);
     }
 }

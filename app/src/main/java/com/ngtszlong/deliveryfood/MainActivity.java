@@ -2,9 +2,13 @@ package com.ngtszlong.deliveryfood;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.location.Address;
 import android.location.Geocoder;
 import android.location.Location;
@@ -18,9 +22,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.cardview.widget.CardView;
 import androidx.core.app.ActivityCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -45,12 +51,13 @@ import com.ngtszlong.deliveryfood.Setting.SettingActivity;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements LocationListener, RestTypeAdapter.OnItemClickLister, RestaurantAdapter.OnItemClickLister {
     Toolbar toolbar;
     SearchView searchView;
     TextView find_location;
-    TextView txt_location;
+    CardView cv_location;
     LocationManager locationManager;
     int REQUEST_LOCATION = 123;
     double latitude;
@@ -66,7 +73,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     RecyclerView rv_rest;
     ArrayList<Restaurant> restaurants;
     private RestaurantAdapter restaurantAdapter;
-    int PLACE_PICKER_REQUEST = 1;
 
     double latitude_sendback;
     double longitude_sendback;
@@ -78,6 +84,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
                     REQUEST_LOCATION);
+        }
+        LoadLocale();
+        SharedPreferences pref = getSharedPreferences("prefs", MODE_PRIVATE);
+        boolean firststart = pref.getBoolean("firstStart", true);
+        if (firststart) {
+            showStartDialog();
         }
         setContentView(R.layout.activity_main);
 
@@ -104,8 +116,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             getlocationname(location);
         }
 
-        txt_location = findViewById(R.id.searchlocation);
-        txt_location.setOnClickListener(new View.OnClickListener() {
+        cv_location = findViewById(R.id.cv_delivery);
+        cv_location.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, MapsActivity.class);
@@ -125,6 +137,40 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         rv_rest.setLayoutManager(new GridLayoutManager(this, 3));
         getrest();
     }
+
+    private void showStartDialog() {
+        final String[] listItems = {"中文", "English"};
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("Choose Language");
+        builder.setCancelable(false);
+        builder.setSingleChoiceItems(listItems, -1, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (which == 0) {
+                    setLocale("zh");
+                    finish();
+                    startActivity(new Intent(MainActivity.this, MainActivity.class));
+                    firststart();
+                }
+                if (which == 1) {
+                    setLocale("en");
+                    finish();
+                    startActivity(new Intent(MainActivity.this, MainActivity.class));
+                    firststart();
+                }
+                dialog.dismiss();
+            }
+        });
+        AlertDialog dialog = builder.create();
+        dialog.show();
+    }
+
+    private void firststart() {
+        SharedPreferences pref = getSharedPreferences("prefs", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putBoolean("firstStart", false);
+        editor.apply();
+    }
+
 
     private void getrest() {
         firebaseDatabase = FirebaseDatabase.getInstance();
@@ -245,5 +291,30 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             }
         });
         databaseReference.keepSynced(true);
+    }
+
+    private void setLocale(String lang) {
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        SharedPreferences.Editor editor = getSharedPreferences("Setting", MODE_PRIVATE).edit();
+        editor.putString("My_Lang", lang);
+        editor.apply();
+    }
+
+    public void LoadLocale() {
+        SharedPreferences preferences = getSharedPreferences("Setting", Activity.MODE_PRIVATE);
+        String language = preferences.getString("My_Lang", "");
+        setLocale(language);
+    }
+
+    @Override
+    public void restonItemClick(int position) {
+        Restaurant restaurant = restaurants.get(position);
+        Intent intent = new Intent(this, RestaurantActivity.class);
+        intent.putExtra("type", restaurant.getRestaurant_No());
+        startActivity(intent);
     }
 }

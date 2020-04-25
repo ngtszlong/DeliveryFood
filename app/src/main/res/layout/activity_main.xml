@@ -11,19 +11,32 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:minHeight="?attr/actionBarSize"
+        android:background="#FFFFFF"
         app:navigationIcon="@drawable/ic_directions_bike">
 
-        <TextView
-            android:id="@+id/searchlocation"
-            android:textColor="#000000"
+        <androidx.cardview.widget.CardView
+            android:id="@+id/cv_delivery"
+            app:cardElevation="0dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Delivery to " />
+            android:layout_height="wrap_content">
 
-        <TextView
-            android:id="@+id/location"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/delivery_to"
+                    android:textColor="#000000" />
+
+                <TextView
+                    android:id="@+id/location"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </androidx.cardview.widget.CardView>
     </androidx.appcompat.widget.Toolbar>
 
     <androidx.appcompat.widget.SearchView
@@ -35,30 +48,32 @@
 
     <HorizontalScrollView
         android:id="@+id/sv_resttype"
-        android:layout_below="@id/searchview"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchview">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_resttype"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content" />
     </HorizontalScrollView>
 
     <TextView
-        android:textStyle="bold"
-        android:textColor="#000000"
         android:id="@+id/txt_featured"
-        android:layout_marginLeft="15dp"
-        android:textSize="20dp"
-        android:text="Featured"
-        android:layout_below="@id/sv_resttype"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sv_resttype"
+        android:layout_marginLeft="15dp"
+        android:text="Popular restaurant"
+        android:textColor="#000000"
+        android:textSize="20dp"
+        android:textStyle="bold" />
 
     <HorizontalScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_featured">
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_main_rest"
             android:layout_width="match_parent"

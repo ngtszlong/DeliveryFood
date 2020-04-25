@@ -4,7 +4,10 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -23,6 +26,8 @@ import com.google.firebase.database.ValueEventListener;
 import com.ngtszlong.deliveryfood.MainActivity;
 import com.ngtszlong.deliveryfood.R;
 
+import java.util.Locale;
+
 public class AccountActivity extends AppCompatActivity {
     Toolbar toolbar;
     EditText edt_name;
@@ -39,6 +44,7 @@ public class AccountActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LoadLocale();
         setContentView(R.layout.activity_account);
 
         toolbar = findViewById(R.id.tb_account);
@@ -125,5 +131,22 @@ public class AccountActivity extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return super.onSupportNavigateUp();
+    }
+
+    private void setLocale(String lang) {
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        SharedPreferences.Editor editor = getSharedPreferences("Setting", MODE_PRIVATE).edit();
+        editor.putString("My_Lang", lang);
+        editor.apply();
+    }
+
+    public void LoadLocale() {
+        SharedPreferences preferences = getSharedPreferences("Setting", Activity.MODE_PRIVATE);
+        String language = preferences.getString("My_Lang", "");
+        setLocale(language);
     }
 }

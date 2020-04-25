@@ -19,5 +19,5 @@
         android:layout_alignParentBottom="true"
         android:layout_centerInParent="true"
         android:layout_marginBottom="20dp"
-        android:text="Submit"/>
+        android:text="@string/submit"/>
 </RelativeLayout>

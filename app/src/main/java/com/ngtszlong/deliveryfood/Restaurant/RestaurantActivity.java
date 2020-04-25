@@ -6,7 +6,10 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.os.Bundle;
 
 import com.google.firebase.database.DataSnapshot;
@@ -17,6 +20,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.ngtszlong.deliveryfood.R;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class RestaurantActivity extends AppCompatActivity  implements RestaurantAdapter.OnItemClickLister{
     String type;
@@ -34,6 +38,7 @@ public class RestaurantActivity extends AppCompatActivity  implements Restaurant
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        LoadLocale();
         setContentView(R.layout.activity_restaurant);
         Intent intent = getIntent();
         type = intent.getStringExtra("type");
@@ -77,13 +82,33 @@ public class RestaurantActivity extends AppCompatActivity  implements Restaurant
     }
 
     @Override
-    public void onItemClick(int position) {
-
-    }
-
-    @Override
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return super.onSupportNavigateUp();
+    }
+
+    private void setLocale(String lang) {
+        Locale locale = new Locale(lang);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
+        SharedPreferences.Editor editor = getSharedPreferences("Setting", MODE_PRIVATE).edit();
+        editor.putString("My_Lang", lang);
+        editor.apply();
+    }
+
+    public void LoadLocale() {
+        SharedPreferences preferences = getSharedPreferences("Setting", Activity.MODE_PRIVATE);
+        String language = preferences.getString("My_Lang", "");
+        setLocale(language);
+    }
+
+    @Override
+    public void restonItemClick(int position) {
+        Restaurant restaurant = restaurants.get(position);
+        Intent intent = new Intent(this, RestaurantActivity.class);
+        intent.putExtra("type", restaurant.getRestaurant_No());
+        startActivity(intent);
     }
 }
