@@ -1,4 +1,4 @@
-package com.ngtszlong.deliveryfood;
+package com.ngtszlong.deliveryfood.Restaurant;
 
 public class Restaurant {
     String type_eng;

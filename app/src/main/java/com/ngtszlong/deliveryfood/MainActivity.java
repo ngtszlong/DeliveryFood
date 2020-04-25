@@ -1,15 +1,7 @@
 package com.ngtszlong.deliveryfood;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.SearchView;
-import androidx.appcompat.widget.Toolbar;
-import androidx.core.app.ActivityCompat;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -21,23 +13,44 @@ import android.location.LocationManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.TextView;
 
-import com.google.firebase.auth.FirebaseAuth;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.ngtszlong.deliveryfood.Restaurant.RestType;
+import com.ngtszlong.deliveryfood.Restaurant.RestTypeAdapter;
+import com.ngtszlong.deliveryfood.Restaurant.Restaurant;
+import com.ngtszlong.deliveryfood.Restaurant.RestaurantActivity;
+import com.ngtszlong.deliveryfood.Restaurant.RestaurantAdapter;
+import com.ngtszlong.deliveryfood.Setting.SettingActivity;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements LocationListener, RestTypeAdapter.OnItemClickLister, RestaurantAdapter.OnItemClickLister{
+public class MainActivity extends AppCompatActivity implements LocationListener, RestTypeAdapter.OnItemClickLister, RestaurantAdapter.OnItemClickLister {
     Toolbar toolbar;
     SearchView searchView;
     TextView find_location;
+    TextView txt_location;
     LocationManager locationManager;
     int REQUEST_LOCATION = 123;
     double latitude;
@@ -53,6 +66,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     RecyclerView rv_rest;
     ArrayList<Restaurant> restaurants;
     private RestaurantAdapter restaurantAdapter;
+    int PLACE_PICKER_REQUEST = 1;
+
+    double latitude_sendback;
+    double longitude_sendback;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +80,10 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                     REQUEST_LOCATION);
         }
         setContentView(R.layout.activity_main);
+
+        Intent intent = getIntent();
+        latitude_sendback = intent.getDoubleExtra("latitude", 0.0);
+        longitude_sendback = intent.getDoubleExtra("longitude", 0.0);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -75,9 +96,22 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         find_location = findViewById(R.id.location);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, (LocationListener) this);
-        Location location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
-        onLocationChanged(location);
-        getlocationname(location);
+        if (latitude_sendback != 0 || longitude_sendback != 0) {
+            getLocationNoGPS();
+        } else {
+            Location location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+            onLocationChanged(location);
+            getlocationname(location);
+        }
+
+        txt_location = findViewById(R.id.searchlocation);
+        txt_location.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, MapsActivity.class);
+                startActivity(intent);
+            }
+        });
 
         rv_resttype = findViewById(R.id.rv_resttype);
         rv_resttype.setHasFixedSize(true);
@@ -164,6 +198,18 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 String address = addressList.get(0).getFeatureName();
                 find_location.setText(address);
             }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void getLocationNoGPS() {
+        try {
+            Geocoder geocoder = new Geocoder(this);
+            List<Address> addressList = null;
+            addressList = geocoder.getFromLocation(latitude_sendback, longitude_sendback, 1);
+            String address = addressList.get(0).getFeatureName();
+            find_location.setText(address);
         } catch (IOException e) {
             e.printStackTrace();
         }

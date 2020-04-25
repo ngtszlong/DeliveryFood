@@ -1,4 +1,4 @@
-package com.ngtszlong.deliveryfood;
+package com.ngtszlong.deliveryfood.Restaurant;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,58 +10,57 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ngtszlong.deliveryfood.MainActivity;
+import com.ngtszlong.deliveryfood.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
-public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.ViewHolder> {
+public class RestTypeAdapter extends RecyclerView.Adapter<RestTypeAdapter.ViewHolder> {
     private Context context;
-    private ArrayList<Restaurant> restaurantArrayList;
-    private RestaurantAdapter.OnItemClickLister onItemClickListener;
+    private ArrayList<RestType> restTypeArrayList;
+    private RestTypeAdapter.OnItemClickLister onItemClickListener;
 
-    public RestaurantAdapter(Context context, ArrayList<Restaurant> restaurantArrayList) {
+    public RestTypeAdapter(Context context, ArrayList<RestType> restTypeArrayList) {
         this.context = context;
-        this.restaurantArrayList = restaurantArrayList;
+        this.restTypeArrayList = restTypeArrayList;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.rest_item, parent, false);
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.resttype_item, parent, false);
         return new ViewHolder(v);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Restaurant restaurant = restaurantArrayList.get(position);
-        holder.txt_rest.setText(restaurant.getRestaurant_eng());
-        Picasso.get().load(restaurant.getImage()).into(holder.img_rest);
+        RestType restType = restTypeArrayList.get(position);
+        holder.txt_rest.setText(restType.getType_eng());
+        Picasso.get().load(restType.getImage()).into(holder.img_rest);
     }
 
     @Override
     public int getItemCount() {
-        return restaurantArrayList.size();
-    }
-
-    public void setOnItemClickListener(MainActivity listener) {
-        onItemClickListener = listener;
+        return restTypeArrayList.size();
     }
 
     public interface OnItemClickLister {
         void onItemClick(int position);
     }
 
-    public void setOnItemClickListener(RestaurantActivity listener) {
+    public void setOnItemClickListener(MainActivity listener) {
         onItemClickListener = listener;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView img_rest;
         TextView txt_rest;
+        ImageView img_rest;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            img_rest = itemView.findViewById(R.id.img_rest);
-            txt_rest = itemView.findViewById(R.id.txt_restname);
+            img_rest = itemView.findViewById(R.id.img_resttype);
+            txt_rest = itemView.findViewById(R.id.txt_resttype);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {

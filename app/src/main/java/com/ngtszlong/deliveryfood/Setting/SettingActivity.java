@@ -1,7 +1,6 @@
-package com.ngtszlong.deliveryfood;
+package com.ngtszlong.deliveryfood.Setting;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.cardview.widget.CardView;
@@ -17,6 +16,10 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.ngtszlong.deliveryfood.AddressAcvtivity;
+import com.ngtszlong.deliveryfood.MainActivity;
+import com.ngtszlong.deliveryfood.OrderActivity;
+import com.ngtszlong.deliveryfood.R;
 
 public class SettingActivity extends AppCompatActivity implements LoginDialog.LoginDialogListener {
     Toolbar toolbar;

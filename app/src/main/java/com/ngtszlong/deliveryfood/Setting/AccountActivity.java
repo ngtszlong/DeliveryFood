@@ -1,4 +1,4 @@
-package com.ngtszlong.deliveryfood;
+package com.ngtszlong.deliveryfood.Setting;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,8 +20,8 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
-import java.util.ArrayList;
+import com.ngtszlong.deliveryfood.MainActivity;
+import com.ngtszlong.deliveryfood.R;
 
 public class AccountActivity extends AppCompatActivity {
     Toolbar toolbar;

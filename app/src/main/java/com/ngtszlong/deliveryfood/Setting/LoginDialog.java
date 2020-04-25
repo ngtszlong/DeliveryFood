@@ -1,4 +1,4 @@
-package com.ngtszlong.deliveryfood;
+package com.ngtszlong.deliveryfood.Setting;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -13,6 +13,8 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDialogFragment;
+
+import com.ngtszlong.deliveryfood.R;
 
 import java.io.IOException;
 
