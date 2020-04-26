@@ -21,7 +21,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.ngtszlong.deliveryfood.AddressAcvtivity;
 import com.ngtszlong.deliveryfood.MainActivity;
 import com.ngtszlong.deliveryfood.OrderActivity;
 import com.ngtszlong.deliveryfood.R;
@@ -32,7 +31,6 @@ public class SettingActivity extends AppCompatActivity implements LoginDialog.Lo
     Toolbar toolbar;
     CardView account;
     CardView order;
-    CardView address;
     CardView language;
     CardView login;
     CardView logout;
@@ -55,7 +53,6 @@ public class SettingActivity extends AppCompatActivity implements LoginDialog.Lo
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         account = findViewById(R.id.Account);
         order = findViewById(R.id.order);
-        address = findViewById(R.id.SaveAddress);
         language = findViewById(R.id.Language);
         login = findViewById(R.id.Login);
         logout = findViewById(R.id.Logout);
@@ -93,13 +90,6 @@ public class SettingActivity extends AppCompatActivity implements LoginDialog.Lo
                     startActivity(intent);
                 }
             });
-            address.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent intent = new Intent(SettingActivity.this, AddressAcvtivity.class);
-                    startActivity(intent);
-                }
-            });
         } else {
             account.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -112,14 +102,7 @@ public class SettingActivity extends AppCompatActivity implements LoginDialog.Lo
                 public void onClick(View v) {
                     Toast.makeText(SettingActivity.this, "You must login first", Toast.LENGTH_SHORT).show();
                 }
-            });
-
-            address.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Toast.makeText(SettingActivity.this, "You must login first", Toast.LENGTH_SHORT).show();
-                }
-            });
+            });;
 
             logout.setVisibility(View.GONE);
         }

@@ -2,6 +2,7 @@ package com.ngtszlong.deliveryfood;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Presentation;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -14,12 +15,16 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.speech.RecognizerIntent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -50,6 +55,7 @@ import java.util.List;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity implements LocationListener, RestTypeAdapter.OnItemClickLister, RestaurantAdapter.OnItemClickLister {
+    private static final int REQUEST_CODE_SPEECH_INPUT = 1000;
     Toolbar toolbar;
     SearchView searchView;
     TextView find_location;
@@ -72,6 +78,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
     double latitude_sendback;
     double longitude_sendback;
+
+    ImageButton btn_voice;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -132,6 +140,40 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         rv_rest.setLayoutManager(new LinearLayoutManager(this));
         rv_rest.setLayoutManager(new GridLayoutManager(this, 3));
         getrest();
+
+        btn_voice = findViewById(R.id.btn_voice_search);
+        btn_voice.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                speak();
+            }
+        });
+    }
+
+    private void speak() {
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak something");
+        try {
+            startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT);
+        } catch (Exception e) {
+            Toast.makeText(this, "" + e.getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            case REQUEST_CODE_SPEECH_INPUT: {
+            }
+            if (resultCode == RESULT_OK && null != data) {
+                ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                searchView.setQuery(result.get(0), false);
+            }
+            break;
+        }
     }
 
     private void showStartDialog() {

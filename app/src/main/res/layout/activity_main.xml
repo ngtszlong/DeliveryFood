@@ -10,15 +10,15 @@
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
-        android:minHeight="?attr/actionBarSize"
         android:background="#FFFFFF"
+        android:minHeight="?attr/actionBarSize"
         app:navigationIcon="@drawable/ic_directions_bike">
 
         <androidx.cardview.widget.CardView
             android:id="@+id/cv_delivery"
-            app:cardElevation="0dp"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:cardElevation="0dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
@@ -39,18 +39,34 @@
         </androidx.cardview.widget.CardView>
     </androidx.appcompat.widget.Toolbar>
 
-    <androidx.appcompat.widget.SearchView
-        android:id="@+id/searchview"
+    <LinearLayout
+        android:id="@+id/ll_search"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/toolbar"
-        app:queryHint="Search Restaurant" />
+        android:orientation="horizontal">
+
+        <androidx.appcompat.widget.SearchView
+            android:id="@+id/searchview"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="left"
+            android:layout_weight="1"
+            app:queryHint="Search Restaurant" />
+
+        <ImageButton
+            android:id="@+id/btn_voice_search"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_voice" />
+    </LinearLayout>
 
     <HorizontalScrollView
         android:id="@+id/sv_resttype"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/searchview">
+        android:layout_below="@id/ll_search">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_resttype"

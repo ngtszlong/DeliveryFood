@@ -20,7 +20,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/tb_setting"
-        android:layout_marginBottom="30dp"
+        android:layout_marginBottom="40dp"
         card_view:cardCornerRadius="5dp"
         card_view:cardElevation="2dp"
         card_view:contentPadding="16dp">
@@ -51,6 +51,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/Account"
         card_view:cardCornerRadius="5dp"
+        android:layout_marginBottom="40dp"
         card_view:cardElevation="2dp"
         card_view:contentPadding="16dp">
 
@@ -75,41 +76,11 @@
     </androidx.cardview.widget.CardView>
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/SaveAddress"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/order"
-        android:layout_marginBottom="30dp"
-        card_view:cardCornerRadius="5dp"
-        card_view:cardElevation="2dp"
-        card_view:contentPadding="16dp">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <ImageView
-                android:layout_width="35dp"
-                android:layout_height="35dp"
-                android:layout_marginLeft="10dp"
-                android:src="@drawable/ic_location" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:layout_marginLeft="20dp"
-                android:text="@string/saved_address"
-                android:textSize="20dp" />
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
-
-    <androidx.cardview.widget.CardView
         android:id="@+id/Language"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/SaveAddress"
-        android:layout_marginBottom="30dp"
+        android:layout_below="@+id/order"
+        android:layout_marginBottom="40dp"
         card_view:cardCornerRadius="5dp"
         card_view:cardElevation="2dp"
         card_view:contentPadding="16dp">
