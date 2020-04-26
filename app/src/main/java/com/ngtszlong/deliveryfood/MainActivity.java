@@ -1,7 +1,6 @@
 package com.ngtszlong.deliveryfood;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,7 +20,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -32,20 +30,18 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.ngtszlong.deliveryfood.Restaurant.RestType;
-import com.ngtszlong.deliveryfood.Restaurant.RestTypeAdapter;
+import com.ngtszlong.deliveryfood.Map.MapsActivity;
+import com.ngtszlong.deliveryfood.Restaurant.Type.RestType;
+import com.ngtszlong.deliveryfood.Restaurant.Type.RestTypeAdapter;
 import com.ngtszlong.deliveryfood.Restaurant.Restaurant;
 import com.ngtszlong.deliveryfood.Restaurant.RestaurantActivity;
 import com.ngtszlong.deliveryfood.Restaurant.RestaurantAdapter;
+import com.ngtszlong.deliveryfood.Restaurant.RestaurantInfoActivity;
 import com.ngtszlong.deliveryfood.Setting.SettingActivity;
 
 import java.io.IOException;
@@ -313,7 +309,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     @Override
     public void restonItemClick(int position) {
         Restaurant restaurant = restaurants.get(position);
-        Intent intent = new Intent(this, RestaurantActivity.class);
+        Intent intent = new Intent(this, RestaurantInfoActivity.class);
         intent.putExtra("type", restaurant.getRestaurant_No());
         startActivity(intent);
     }

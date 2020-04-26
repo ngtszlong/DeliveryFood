@@ -1,4 +1,4 @@
-package com.ngtszlong.deliveryfood.Restaurant;
+package com.ngtszlong.deliveryfood.Restaurant.Type;
 
 public class RestType {
     String type_chi;

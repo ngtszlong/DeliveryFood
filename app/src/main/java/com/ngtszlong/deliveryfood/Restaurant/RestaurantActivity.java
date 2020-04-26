@@ -107,7 +107,7 @@ public class RestaurantActivity extends AppCompatActivity  implements Restaurant
     @Override
     public void restonItemClick(int position) {
         Restaurant restaurant = restaurants.get(position);
-        Intent intent = new Intent(this, RestaurantActivity.class);
+        Intent intent = new Intent(this, RestaurantInfoActivity.class);
         intent.putExtra("type", restaurant.getRestaurant_No());
         startActivity(intent);
     }
