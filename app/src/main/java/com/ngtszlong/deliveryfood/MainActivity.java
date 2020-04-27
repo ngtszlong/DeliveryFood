@@ -60,6 +60,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     Toolbar toolbar;
     SearchView searchView;
     TextView find_location;
+    TextView txt_popular;
     CardView cv_location;
     LocationManager locationManager;
     int REQUEST_LOCATION = 123;
@@ -98,6 +99,8 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         latitude_sendback = intent.getDoubleExtra("latitude", 0.0);
         longitude_sendback = intent.getDoubleExtra("longitude", 0.0);
 
+        txt_popular = findViewById(R.id.txt_featured);
+
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
@@ -105,6 +108,18 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         searchView = findViewById(R.id.searchview);
         searchView.onActionViewExpanded();
         searchView.setIconifiedByDefault(true);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                search(newText);
+                return false;
+            }
+        });
 
         find_location = findViewById(R.id.location);
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -145,6 +160,25 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 speak();
             }
         });
+    }
+
+    private void search(String newText) {
+        if (!newText.equals("")){
+            rv_resttype.setVisibility(View.GONE);
+            txt_popular.setText("Searching Result");
+        }else{
+            rv_resttype.setVisibility(View.VISIBLE);
+            txt_popular.setText("Popular restaurant");
+        }
+        ArrayList<Restaurant> restaurantArrayList = new ArrayList<>();
+        for (Restaurant object : restaurants){
+            if (object.getRestaurant_eng().toLowerCase().contains(newText.toLowerCase()) || object.getRestaurant_chi().contains(newText)){
+                restaurantArrayList.add(object);
+            }
+        }
+        RestaurantAdapter restaurantAdapter1 = new RestaurantAdapter(this, restaurantArrayList);
+        rv_rest.setAdapter(restaurantAdapter1);
+        restaurantAdapter1.setOnItemClickListener(MainActivity.this);
     }
 
     private void speak() {
@@ -205,7 +239,6 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         editor.putBoolean("firstStart", false);
         editor.apply();
     }
-
 
     private void getrest() {
         firebaseDatabase = FirebaseDatabase.getInstance();

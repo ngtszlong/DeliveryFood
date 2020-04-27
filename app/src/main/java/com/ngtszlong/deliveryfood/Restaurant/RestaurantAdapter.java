@@ -26,6 +26,9 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         this.restaurantArrayList = restaurantArrayList;
     }
 
+    public RestaurantAdapter(ArrayList<Restaurant> restaurantArrayList) {
+    }
+
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

@@ -1,4 +1,4 @@
-package com.ngtszlong.deliveryfood.Restaurant;
+package com.ngtszlong.deliveryfood.Restaurant.Image;
 
 public class Image {
     String image;

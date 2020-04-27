@@ -1,4 +1,4 @@
-package com.ngtszlong.deliveryfood.Restaurant;
+package com.ngtszlong.deliveryfood.Restaurant.Image;
 
 import android.content.Context;
 import android.view.LayoutInflater;

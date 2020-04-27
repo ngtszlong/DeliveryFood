@@ -27,7 +27,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.ngtszlong.deliveryfood.R;
-import com.ngtszlong.deliveryfood.Restaurant.Image;
+import com.ngtszlong.deliveryfood.Restaurant.Image.Image;
 
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;

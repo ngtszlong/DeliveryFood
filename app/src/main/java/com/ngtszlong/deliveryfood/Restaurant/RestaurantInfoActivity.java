@@ -21,6 +21,8 @@ import com.ngtszlong.deliveryfood.Map.ViewMapsActivity;
 import com.ngtszlong.deliveryfood.R;
 import com.ngtszlong.deliveryfood.Restaurant.Food.Food;
 import com.ngtszlong.deliveryfood.Restaurant.Food.FoodAdapter;
+import com.ngtszlong.deliveryfood.Restaurant.Image.Image;
+import com.ngtszlong.deliveryfood.Restaurant.Image.ImageAdapter;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
