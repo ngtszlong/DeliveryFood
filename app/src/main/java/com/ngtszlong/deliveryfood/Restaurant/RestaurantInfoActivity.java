@@ -1,24 +1,24 @@
 package com.ngtszlong.deliveryfood.Restaurant;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.ngtszlong.deliveryfood.R;
 import com.ngtszlong.deliveryfood.Map.ViewMapsActivity;
+import com.ngtszlong.deliveryfood.R;
 import com.ngtszlong.deliveryfood.Restaurant.Food.Food;
 import com.ngtszlong.deliveryfood.Restaurant.Food.FoodAdapter;
 import com.squareup.picasso.Picasso;
@@ -40,10 +40,14 @@ public class RestaurantInfoActivity extends AppCompatActivity {
     TextView btn_restlocation;
     TextView txt_time;
 
-    RecyclerView recyclerView;
+    RecyclerView rv_foodlist;
     RecyclerView.LayoutManager layoutManager;
     ArrayList<Food> foods;
     FoodAdapter foodAdapter;
+
+    RecyclerView rv_foodimage;
+    ArrayList<Image> images;
+    ImageAdapter imageAdapter;
 
 
     @Override
@@ -77,11 +81,40 @@ public class RestaurantInfoActivity extends AppCompatActivity {
             }
         });
 
-        recyclerView = findViewById(R.id.rv_foodlist);
-        recyclerView.setHasFixedSize(true);
+        rv_foodlist = findViewById(R.id.rv_foodlist);
+        rv_foodlist.setHasFixedSize(true);
         layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        rv_foodlist.setLayoutManager(layoutManager);
         getFoodInfo();
+
+        rv_foodimage = findViewById(R.id.rv_foodimage);
+        rv_foodimage.setHasFixedSize(true);
+        rv_foodimage.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+
+        getFoodImage();
+    }
+
+    private void getFoodImage() {
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference().child("Image").child(no);
+        databaseReference.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                images = new ArrayList<>();
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    Image l = dataSnapshot1.getValue(Image.class);
+                    images.add(l);
+                }
+                imageAdapter = new ImageAdapter(RestaurantInfoActivity.this, images);
+                rv_foodimage.setAdapter(imageAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+        databaseReference.keepSynced(true);
     }
 
     private void getFoodInfo() {
@@ -93,12 +126,12 @@ public class RestaurantInfoActivity extends AppCompatActivity {
                 foods = new ArrayList<Food>();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     Food l = dataSnapshot1.getValue(Food.class);
-                    if (no.equals(l.getRestaurant_No())){
+                    if (no.equals(l.getRestaurant_No())) {
                         foods.add(l);
                     }
                 }
                 foodAdapter = new FoodAdapter(RestaurantInfoActivity.this, foods);
-                recyclerView.setAdapter(foodAdapter);
+                rv_foodlist.setAdapter(foodAdapter);
             }
 
             @Override
@@ -140,4 +173,6 @@ public class RestaurantInfoActivity extends AppCompatActivity {
         onBackPressed();
         return super.onSupportNavigateUp();
     }
+
+
 }

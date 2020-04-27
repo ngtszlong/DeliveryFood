@@ -2,7 +2,6 @@ package com.ngtszlong.deliveryfood;
 
 import android.Manifest;
 import android.app.Activity;
-import android.app.Presentation;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -40,13 +39,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.gun0912.tedpermission.PermissionListener;
+import com.gun0912.tedpermission.TedPermission;
 import com.ngtszlong.deliveryfood.Map.MapsActivity;
-import com.ngtszlong.deliveryfood.Restaurant.Type.RestType;
-import com.ngtszlong.deliveryfood.Restaurant.Type.RestTypeAdapter;
 import com.ngtszlong.deliveryfood.Restaurant.Restaurant;
 import com.ngtszlong.deliveryfood.Restaurant.RestaurantActivity;
 import com.ngtszlong.deliveryfood.Restaurant.RestaurantAdapter;
 import com.ngtszlong.deliveryfood.Restaurant.RestaurantInfoActivity;
+import com.ngtszlong.deliveryfood.Restaurant.Type.RestType;
+import com.ngtszlong.deliveryfood.Restaurant.Type.RestTypeAdapter;
 import com.ngtszlong.deliveryfood.Setting.SettingActivity;
 
 import java.io.IOException;
@@ -84,11 +85,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this,
-                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                    REQUEST_LOCATION);
-        }
+        checkPermission();
         LoadLocale();
         SharedPreferences pref = getSharedPreferences("prefs", MODE_PRIVATE);
         boolean firststart = pref.getBoolean("firstStart", true);
@@ -354,5 +351,24 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         Intent intent = new Intent(this, RestaurantInfoActivity.class);
         intent.putExtra("type", restaurant.getRestaurant_No());
         startActivity(intent);
+    }
+
+    public void checkPermission() {
+        while (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED &&
+                ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                    REQUEST_LOCATION);
+        }
+        PermissionListener permissionListener = new PermissionListener() {
+            @Override
+            public void onPermissionGranted() {
+            }
+
+            @Override
+            public void onPermissionDenied(List<String> deniedPermissions) {
+            }
+        };
+        TedPermission.with(MainActivity.this).setPermissionListener(permissionListener).setPermissions(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE).setGotoSettingButton(true).check();
     }
 }

@@ -11,8 +11,13 @@ public class Food {
     String other_eng;
     String price;
     String restaurant_No;
+    String restaurant_eng;
+    String restaurant_chi;
 
-    public Food(String description_chi, String description_eng, String image_2, String image_main, String name_chi, String name_eng, String other_chi, String other_eng, String price, String restaurant_No) {
+    public Food() {
+    }
+
+    public Food(String description_chi, String description_eng, String image_2, String image_main, String name_chi, String name_eng, String other_chi, String other_eng, String price, String restaurant_No, String restaurant_eng, String restaurant_chi) {
         this.description_chi = description_chi;
         this.description_eng = description_eng;
         this.image_2 = image_2;
@@ -23,9 +28,8 @@ public class Food {
         this.other_eng = other_eng;
         this.price = price;
         this.restaurant_No = restaurant_No;
-    }
-
-    public Food() {
+        this.restaurant_eng = restaurant_eng;
+        this.restaurant_chi = restaurant_chi;
     }
 
     public String getDescription_chi() {
@@ -102,5 +106,25 @@ public class Food {
 
     public String getRestaurant_No() {
         return restaurant_No;
+    }
+
+    public void setRestaurant_No(String restaurant_No) {
+        this.restaurant_No = restaurant_No;
+    }
+
+    public String getRestaurant_eng() {
+        return restaurant_eng;
+    }
+
+    public void setRestaurant_eng(String restaurant_eng) {
+        this.restaurant_eng = restaurant_eng;
+    }
+
+    public String getRestaurant_chi() {
+        return restaurant_chi;
+    }
+
+    public void setRestaurant_chi(String restaurant_chi) {
+        this.restaurant_chi = restaurant_chi;
     }
 }

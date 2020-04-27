@@ -6,18 +6,34 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.ngtszlong.deliveryfood.Order.Order;
 import com.ngtszlong.deliveryfood.R;
 import com.squareup.picasso.Picasso;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
     private Context context;
     private ArrayList<Food> foodArrayList;
+
+    SimpleDateFormat format;
+    Date date;
+    String str;
+    Order order;
+    FirebaseAuth fAuth;
+    FirebaseUser user;
 
     public FoodAdapter(Context context, ArrayList<Food> foodArrayList) {
         this.context = context;
@@ -28,23 +44,45 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.food_item, parent, false);
+        order = new Order();
+        fAuth = FirebaseAuth.getInstance();
+        user = fAuth.getCurrentUser();
         return new ViewHolder(v);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Food food = foodArrayList.get(position);
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        final Food food = foodArrayList.get(position);
         holder.txt_foodname.setText(food.getName_eng());
         holder.txt_description.setText(food.getDescription_eng());
         holder.txt_other.setText(food.getOther_eng());
         holder.txt_price.setText(food.getPrice());
         Picasso.get().load(food.getImage_main()).into(holder.img_foodimage);
         Picasso.get().load(food.getImage_2()).into(holder.img_other);
-        if (food.getImage_2().equals("https://upload.wikimedia.org/wikipedia/commons/c/c0/White_color_Page.jpg")){
+        if (food.getImage_2().equals("https://upload.wikimedia.org/wikipedia/commons/c/c0/White_color_Page.jpg")) {
             holder.img_other.setVisibility(View.GONE);
-        }else{
+        } else {
             holder.img_other.setVisibility(View.VISIBLE);
         }
+        holder.cv_order.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getcurrenttime();
+                String uid = user.getUid();
+                order.setRestaurant_No(food.getRestaurant_No());
+                order.setName_chi(food.getName_chi());
+                order.setName_eng(food.getName_eng());
+                order.setUid(uid);
+                order.setPrice(food.getPrice());
+                order.setTime(str);
+                order.setRestaurantname_eng(food.getRestaurant_eng());
+                order.setRestaurantname_chi(food.getRestaurant_chi());
+                FirebaseDatabase database = FirebaseDatabase.getInstance();
+                DatabaseReference reference = database.getReference("Order");
+                reference.child(uid).child(str).setValue(order);
+                Toast.makeText(holder.itemView.getContext(), "You have been order", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -59,6 +97,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
         TextView txt_other;
         ImageView img_other;
         TextView txt_price;
+        CardView cv_order;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -68,6 +107,13 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
             txt_other = itemView.findViewById(R.id.txt_other);
             img_other = itemView.findViewById(R.id.img_other);
             txt_price = itemView.findViewById(R.id.txt_price);
+            cv_order = itemView.findViewById(R.id.cv_order);
         }
+    }
+
+    private void getcurrenttime() {
+        format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        date = new Date(System.currentTimeMillis());
+        str = format.format(date);
     }
 }
