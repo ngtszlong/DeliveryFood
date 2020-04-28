@@ -18,9 +18,9 @@ import com.ngtszlong.deliveryfood.R;
 
 public class LoginDialog extends AppCompatDialogFragment {
 
-    EditText edt_email;
-    EditText edt_password;
-    LoginDialogListener listener;
+    private EditText edt_email;
+    private EditText edt_password;
+    private LoginDialogListener listener;
 
     @NonNull
     @Override
@@ -29,7 +29,7 @@ public class LoginDialog extends AppCompatDialogFragment {
 
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.logindialog, null);
-        builder.setView(view).setTitle(R.string.login).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+        builder.setView(view).setTitle(R.string.login).setNegativeButton(R.string.Cancel, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
 
@@ -40,9 +40,9 @@ public class LoginDialog extends AppCompatDialogFragment {
                 String username = edt_email.getText().toString();
                 String password = edt_password.getText().toString();
                 if (TextUtils.isEmpty(username)) {
-                    edt_email.setError("You need to input your email");
+                    edt_email.setError(getText(R.string.input_your_username));
                 } else if (TextUtils.isEmpty(password)) {
-                    edt_password.setError("You need to input your password");
+                    edt_password.setError(getText(R.string.input_your_password));
                 } else {
                     listener.applyText(username, password);
                 }

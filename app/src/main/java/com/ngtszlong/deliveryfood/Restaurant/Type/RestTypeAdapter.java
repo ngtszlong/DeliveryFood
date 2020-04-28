@@ -1,6 +1,7 @@
 package com.ngtszlong.deliveryfood.Restaurant.Type;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,8 +36,13 @@ public class RestTypeAdapter extends RecyclerView.Adapter<RestTypeAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        SharedPreferences sp = context.getSharedPreferences( "Setting", 0 );
         RestType restType = restTypeArrayList.get(position);
-        holder.txt_rest.setText(restType.getType_eng());
+        if (sp.getString("My_Lang", "").equals("zh")){
+            holder.txt_rest.setText(restType.getType_chi());
+        }else if (sp.getString("My_Lang", "").equals("en")){
+            holder.txt_rest.setText(restType.getType_eng());
+        }
         Picasso.get().load(restType.getImage()).into(holder.img_rest);
     }
 

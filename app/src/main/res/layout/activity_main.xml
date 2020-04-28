@@ -48,18 +48,20 @@
 
         <androidx.appcompat.widget.SearchView
             android:id="@+id/searchview"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_gravity="left"
             android:layout_weight="1"
-            app:queryHint="Search Restaurant" />
+            app:queryHint="@string/SearchRestaurant"
+            tools:ignore="RtlHardcoded" />
 
         <ImageButton
             android:id="@+id/btn_voice_search"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="center"
-            android:src="@drawable/ic_voice" />
+            android:src="@drawable/ic_voice"
+            tools:ignore="ContentDescription" />
     </LinearLayout>
 
     <HorizontalScrollView
@@ -70,7 +72,7 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_resttype"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
     </HorizontalScrollView>
 
@@ -80,12 +82,13 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/sv_resttype"
         android:layout_marginLeft="15dp"
-        android:text="Popular restaurant"
+        android:text="@string/popular_restaurant"
         android:textColor="#000000"
-        android:textSize="20dp"
-        android:textStyle="bold" />
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginStart="15dp" />
 
-    <HorizontalScrollView
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/txt_featured">
@@ -95,5 +98,5 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:scrollbars="none" />
-    </HorizontalScrollView>
+    </ScrollView>
 </RelativeLayout>

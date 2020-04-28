@@ -1,6 +1,7 @@
 package com.ngtszlong.deliveryfood.Order;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,9 +33,15 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        SharedPreferences sp = context.getSharedPreferences( "Setting", 0 );
         Order order = orderArrayList.get(position);
-        holder.txt_restaurant.setText(order.getRestaurantname_eng());
-        holder.txt_food.setText(order.getName_eng());
+        if (sp.getString("My_Lang", "").equals("zh")){
+            holder.txt_restaurant.setText(order.getRestaurantname_chi());
+            holder.txt_food.setText(order.getName_chi());
+        }else if (sp.getString("My_Lang", "").equals("en")){
+            holder.txt_restaurant.setText(order.getRestaurantname_eng());
+            holder.txt_food.setText(order.getName_eng());
+        }
         holder.txt_time.setText(order.getTime());
         holder.txt_price.setText(order.getPrice());
     }

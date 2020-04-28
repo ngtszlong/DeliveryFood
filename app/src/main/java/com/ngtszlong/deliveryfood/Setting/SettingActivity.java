@@ -94,13 +94,13 @@ public class SettingActivity extends AppCompatActivity implements LoginDialog.Lo
             account.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(SettingActivity.this, "You must login first", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingActivity.this, R.string.login_first, Toast.LENGTH_SHORT).show();
                 }
             });
             order.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(SettingActivity.this, "You must login first", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(SettingActivity.this, R.string.login_first, Toast.LENGTH_SHORT).show();
                 }
             });;
 
@@ -135,7 +135,7 @@ public class SettingActivity extends AppCompatActivity implements LoginDialog.Lo
     private void ShowChangeLanguageDialog() {
         final String[] listItems = {"中文", "English"};
         AlertDialog.Builder builder = new AlertDialog.Builder(SettingActivity.this);
-        builder.setTitle("Choose Language");
+        builder.setTitle("選擇語言 Choose Language");
         builder.setSingleChoiceItems(listItems, -1, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -188,7 +188,7 @@ public class SettingActivity extends AppCompatActivity implements LoginDialog.Lo
     @Override
     public void applyText(String email, String password) {
 
-        progressDialog.setMessage("Logging in, Please wait...");
+        progressDialog.setMessage(getText(R.string.Logging_in));
         progressDialog.show();
 
         mAuth.signInWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {

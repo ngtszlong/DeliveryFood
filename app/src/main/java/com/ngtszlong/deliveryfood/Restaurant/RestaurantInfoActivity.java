@@ -1,6 +1,7 @@
 package com.ngtszlong.deliveryfood.Restaurant;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -51,7 +52,6 @@ public class RestaurantInfoActivity extends AppCompatActivity {
     ArrayList<Image> images;
     ImageAdapter imageAdapter;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,7 +67,7 @@ public class RestaurantInfoActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.tb_restinfo);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Restaurant Information");
+        getSupportActionBar().setTitle(R.string.Restaurant_Information);
 
         Intent intent = getIntent();
         no = intent.getStringExtra("type");
@@ -150,13 +150,20 @@ public class RestaurantInfoActivity extends AppCompatActivity {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                SharedPreferences sp = getSharedPreferences( "Setting", 0 );
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     Restaurant l = dataSnapshot1.getValue(Restaurant.class);
                     if (no.equals(l.getRestaurant_No())) {
                         Picasso.get().load(l.getImage()).into(img_restinfo);
-                        txt_restinfoname.setText(l.getRestaurant_eng());
-                        txt_restinfotype.setText(l.getType_eng());
-                        txt_location.setText(l.getLocation_eng());
+                        if (sp.getString("My_Lang", "").equals("zh")){
+                            txt_restinfoname.setText(l.getRestaurant_chi());
+                            txt_restinfotype.setText(l.getType_chi());
+                            txt_location.setText(l.getLocation_chi());
+                        }else if (sp.getString("My_Lang", "").equals("en")){
+                            txt_restinfoname.setText(l.getRestaurant_eng());
+                            txt_restinfotype.setText(l.getType_eng());
+                            txt_location.setText(l.getLocation_eng());
+                        }
                         txt_time.setText(l.getDelivery_time());
                     }
                 }
@@ -175,6 +182,4 @@ public class RestaurantInfoActivity extends AppCompatActivity {
         onBackPressed();
         return super.onSupportNavigateUp();
     }
-
-
 }

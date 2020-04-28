@@ -62,7 +62,7 @@ public class OrderActivity extends AppCompatActivity implements OrderAdapter.OnI
         toolbar = findViewById(R.id.tb_order);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Order");
+        getSupportActionBar().setTitle(R.string.order);
 
         recyclerView = findViewById(R.id.rv_order);
         recyclerView.setHasFixedSize(true);

@@ -1,9 +1,5 @@
 package com.ngtszlong.deliveryfood.Setting;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -15,6 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -71,15 +71,15 @@ public class RegisterActivity extends AppCompatActivity {
                 final String phone = edt_phone.getText().toString().trim();
 
                 if (TextUtils.isEmpty(name)) {
-                    edt_name.setError("You need to input your username");
+                    edt_name.setError(getText(R.string.input_your_username));
                 } else if (TextUtils.isEmpty(email)) {
-                    edt_email.setError("You need to input your email");
+                    edt_email.setError(getText(R.string.input_your_email));
                 } else if (TextUtils.isEmpty(password)) {
-                    edt_phone.setError("You need to input your phone");
+                    edt_phone.setError(getText(R.string.input_your_password));
                 } else if (TextUtils.isEmpty(phone)) {
-                    edt_phone.setError("You need to input your phone");
+                    edt_phone.setError(getText(R.string.input_your_phone));
                 } else {
-                    progressDialog.setMessage("Registering Please Wait...");
+                    progressDialog.setMessage(getText(R.string.Registering_Please_Wait));
                     progressDialog.show();
                     mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
                         @Override

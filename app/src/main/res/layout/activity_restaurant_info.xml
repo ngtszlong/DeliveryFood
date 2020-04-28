@@ -26,7 +26,8 @@
         android:layout_below="@id/tb_restinfo"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/txt_restinfoname"
@@ -36,7 +37,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:textColor="#000000"
-        android:textSize="25dp" />
+        android:textSize="25sp" />
 
     <TextView
         android:id="@+id/txt_restinfotype"
@@ -62,7 +63,7 @@
 
         <TextView
             android:id="@+id/btn_restinfolocate"
-            android:text="View Location"
+            android:text="@string/view_location"
             android:textColor="#00FA9A"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" />
@@ -80,14 +81,16 @@
         <ImageView
             android:src="@drawable/ic_directions_bike"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"/>
+            android:layout_height="wrap_content"
+            tools:ignore="ContentDescription" />
 
         <TextView
-            android:text="Delivery within "
+            android:text="@string/delivery_within"
             android:layout_marginLeft="20dp"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_marginStart="20dp" />
 
         <TextView
             android:id="@+id/txt_time"
@@ -96,7 +99,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:text=" Minute"
+            android:text="@string/minute"
             android:layout_width="wrap_content"
             android:layout_gravity="center"
             android:layout_height="wrap_content" />

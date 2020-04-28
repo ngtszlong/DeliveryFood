@@ -1,9 +1,5 @@
 package com.ngtszlong.deliveryfood.Setting;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +9,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -50,7 +50,7 @@ public class AccountActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.tb_account);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setTitle("Your Information");
+        getSupportActionBar().setTitle(R.string.Your_Information);
 
         edt_name = findViewById(R.id.edt_disname);
         edt_email = findViewById(R.id.edt_disemail);
@@ -123,7 +123,7 @@ public class AccountActivity extends AppCompatActivity {
 
             }
         });
-        Toast.makeText(this, "Data Successfully Updated", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.Data_Successfully_Updated, Toast.LENGTH_SHORT).show();
 
     }
 

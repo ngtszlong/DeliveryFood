@@ -1,6 +1,7 @@
 package com.ngtszlong.deliveryfood.Restaurant.Food;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,10 +53,17 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        SharedPreferences sp = context.getSharedPreferences( "Setting", 0 );
         final Food food = foodArrayList.get(position);
-        holder.txt_foodname.setText(food.getName_eng());
-        holder.txt_description.setText(food.getDescription_eng());
-        holder.txt_other.setText(food.getOther_eng());
+        if (sp.getString("My_Lang", "").equals("zh")){
+            holder.txt_foodname.setText(food.getName_chi());
+            holder.txt_description.setText(food.getDescription_chi());
+            holder.txt_other.setText(food.getOther_chi());
+        }else if (sp.getString("My_Lang", "").equals("en")){
+            holder.txt_foodname.setText(food.getName_eng());
+            holder.txt_description.setText(food.getDescription_eng());
+            holder.txt_other.setText(food.getOther_eng());
+        }
         holder.txt_price.setText(food.getPrice());
         Picasso.get().load(food.getImage_main()).into(holder.img_foodimage);
         Picasso.get().load(food.getImage_2()).into(holder.img_other);
@@ -80,7 +88,7 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
                 FirebaseDatabase database = FirebaseDatabase.getInstance();
                 DatabaseReference reference = database.getReference("Order");
                 reference.child(uid).child(str).setValue(order);
-                Toast.makeText(holder.itemView.getContext(), "You have been order", Toast.LENGTH_SHORT).show();
+                Toast.makeText(holder.itemView.getContext(), R.string.You_have_been_order, Toast.LENGTH_SHORT).show();
             }
         });
     }

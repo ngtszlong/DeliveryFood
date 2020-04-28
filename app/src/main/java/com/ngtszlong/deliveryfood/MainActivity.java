@@ -127,7 +127,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         if (latitude_sendback != 0 || longitude_sendback != 0) {
             getLocationNoGPS();
         } else {
-            Location location = locationManager.getLastKnownLocation(locationManager.NETWORK_PROVIDER);
+            Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
             onLocationChanged(location);
             getlocationname(location);
         }
@@ -163,16 +163,16 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     }
 
     private void search(String newText) {
-        if (!newText.equals("")){
+        if (!newText.equals("")) {
             rv_resttype.setVisibility(View.GONE);
-            txt_popular.setText("Searching Result");
-        }else{
+            txt_popular.setText(R.string.Searchresult);
+        } else {
             rv_resttype.setVisibility(View.VISIBLE);
-            txt_popular.setText("Popular restaurant");
+            txt_popular.setText(R.string.popular_restaurant);
         }
         ArrayList<Restaurant> restaurantArrayList = new ArrayList<>();
-        for (Restaurant object : restaurants){
-            if (object.getRestaurant_eng().toLowerCase().contains(newText.toLowerCase()) || object.getRestaurant_chi().contains(newText)){
+        for (Restaurant object : restaurants) {
+            if (object.getRestaurant_eng().toLowerCase().contains(newText.toLowerCase()) || object.getRestaurant_chi().contains(newText)) {
                 restaurantArrayList.add(object);
             }
         }
@@ -185,7 +185,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Speak something");
+        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, R.string.Speak_something);
         try {
             startActivityForResult(intent, REQUEST_CODE_SPEECH_INPUT);
         } catch (Exception e) {
@@ -196,20 +196,17 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case REQUEST_CODE_SPEECH_INPUT: {
-            }
+        if (requestCode == REQUEST_CODE_SPEECH_INPUT) {
             if (resultCode == RESULT_OK && null != data) {
                 ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                 searchView.setQuery(result.get(0), false);
             }
-            break;
         }
     }
 
     private void showStartDialog() {
         final String[] listItems = {"中文", "English"};
-        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("Choose Language");
+        AlertDialog.Builder builder = new AlertDialog.Builder(this).setTitle("選擇語言 Choose Language");
         builder.setCancelable(false);
         builder.setSingleChoiceItems(listItems, -1, new DialogInterface.OnClickListener() {
             @Override
@@ -246,7 +243,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                restaurants = new ArrayList<Restaurant>();
+                restaurants = new ArrayList<>();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     Restaurant l = dataSnapshot1.getValue(Restaurant.class);
                     restaurants.add(l);
@@ -272,13 +269,11 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.person_detail:
-                Intent intent = new Intent(this, SettingActivity.class);
-                startActivity(intent);
-            default:
-                return super.onOptionsItemSelected(item);
+        if (item.getItemId() == R.id.person_detail) {
+            Intent intent = new Intent(this, SettingActivity.class);
+            startActivity(intent);
         }
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
@@ -304,7 +299,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     private void getlocationname(Location location) {
         try {
             Geocoder geocoder = new Geocoder(this);
-            List<Address> addressList = null;
+            List<Address> addressList;
             if (location != null) {
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
@@ -320,7 +315,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     public void getLocationNoGPS() {
         try {
             Geocoder geocoder = new Geocoder(this);
-            List<Address> addressList = null;
+            List<Address> addressList;
             addressList = geocoder.getFromLocation(latitude_sendback, longitude_sendback, 1);
             String address = addressList.get(0).getFeatureName();
             find_location.setText(address);
@@ -333,7 +328,12 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
     public void onItemClick(int position) {
         RestType restType = restTypes.get(position);
         Intent intent = new Intent(this, RestaurantActivity.class);
-        intent.putExtra("type", restType.getType_eng());
+        SharedPreferences sp = getSharedPreferences( "Setting", 0 );
+        if (sp.getString("My_Lang", "").equals("zh")){
+            intent.putExtra("type", restType.getType_chi());
+        }else if (sp.getString("My_Lang", "").equals("en")){
+            intent.putExtra("type", restType.getType_eng());
+        }
         startActivity(intent);
     }
 
@@ -343,7 +343,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                restTypes = new ArrayList<RestType>();
+                restTypes = new ArrayList<>();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     RestType l = dataSnapshot1.getValue(RestType.class);
                     restTypes.add(l);

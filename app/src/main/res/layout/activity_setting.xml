@@ -27,13 +27,17 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginLeft="10dp"
-                android:src="@drawable/ic_person" />
+                android:src="@drawable/ic_person"
+                tools:ignore="ContentDescription"
+                android:layout_marginStart="10dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -41,7 +45,8 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
                 android:text="@string/account"
-                android:textSize="20dp" />
+                android:textSize="20sp"
+                android:layout_marginStart="20dp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -56,14 +61,18 @@
         card_view:contentPadding="16dp">
 
         <LinearLayout
+            android:orientation="horizontal"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginLeft="10dp"
-                android:src="@drawable/ic_order" />
+                android:src="@drawable/ic_order"
+                android:layout_marginStart="10dp"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -71,7 +80,8 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
                 android:text="@string/my_order"
-                android:textSize="20dp" />
+                android:textSize="20sp"
+                android:layout_marginStart="20dp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -87,13 +97,17 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
 
             <ImageView
                 android:layout_width="35dp"
                 android:layout_height="35dp"
                 android:layout_marginLeft="10dp"
-                android:src="@drawable/ic_language" />
+                android:src="@drawable/ic_language"
+                android:layout_marginStart="10dp"
+                tools:ignore="ContentDescription" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -101,7 +115,8 @@
                 android:layout_gravity="center"
                 android:layout_marginLeft="20dp"
                 android:text="@string/language"
-                android:textSize="20dp" />
+                android:textSize="20sp"
+                android:layout_marginStart="20dp" />
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
@@ -130,7 +145,8 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="20dp"
                     android:text="@string/login"
-                    android:textSize="20dp" />
+                    android:textSize="20sp"
+                    android:layout_marginStart="20dp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -152,7 +168,8 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="20dp"
                     android:text="@string/logout"
-                    android:textSize="20dp" />
+                    android:textSize="20sp"
+                    android:layout_marginStart="20dp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 
@@ -174,7 +191,8 @@
                     android:layout_gravity="center"
                     android:layout_marginLeft="20dp"
                     android:text="@string/register"
-                    android:textSize="20dp" />
+                    android:textSize="20sp"
+                    android:layout_marginStart="20dp" />
             </LinearLayout>
         </androidx.cardview.widget.CardView>
 

@@ -1,6 +1,7 @@
 package com.ngtszlong.deliveryfood.Restaurant;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,9 +27,6 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
         this.restaurantArrayList = restaurantArrayList;
     }
 
-    public RestaurantAdapter(ArrayList<Restaurant> restaurantArrayList) {
-    }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -38,8 +36,13 @@ public class RestaurantAdapter extends RecyclerView.Adapter<RestaurantAdapter.Vi
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+        SharedPreferences sp = context.getSharedPreferences( "Setting", 0 );
         Restaurant restaurant = restaurantArrayList.get(position);
-        holder.txt_rest.setText(restaurant.getRestaurant_eng());
+        if (sp.getString("My_Lang", "").equals("zh")){
+            holder.txt_rest.setText(restaurant.getRestaurant_chi());
+        }else if (sp.getString("My_Lang", "").equals("en")){
+            holder.txt_rest.setText(restaurant.getRestaurant_eng());
+        }
         Picasso.get().load(restaurant.getImage()).into(holder.img_rest);
     }
 

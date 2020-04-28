@@ -1,16 +1,16 @@
 package com.ngtszlong.deliveryfood.Restaurant;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.os.Bundle;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -64,7 +64,7 @@ public class RestaurantActivity extends AppCompatActivity  implements Restaurant
                 restaurants = new ArrayList<Restaurant>();
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     Restaurant l = dataSnapshot1.getValue(Restaurant.class);
-                    if (l.getType_eng().equals(type)){
+                    if (l.getType_eng().equals(type) || l.getType_chi().equals(type)){
                         restaurants.add(l);
                     }
                 }
