@@ -304,7 +304,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
                 latitude = location.getLatitude();
                 longitude = location.getLongitude();
                 addressList = geocoder.getFromLocation(latitude, longitude, 1);
-                String address = addressList.get(0).getFeatureName();
+                String address = addressList.get(0).getAddressLine(0);
                 find_location.setText(address);
             }
         } catch (IOException e) {
@@ -317,7 +317,7 @@ public class MainActivity extends AppCompatActivity implements LocationListener,
             Geocoder geocoder = new Geocoder(this);
             List<Address> addressList;
             addressList = geocoder.getFromLocation(latitude_sendback, longitude_sendback, 1);
-            String address = addressList.get(0).getFeatureName();
+            String address = addressList.get(0).getAddressLine(0);
             find_location.setText(address);
         } catch (IOException e) {
             e.printStackTrace();

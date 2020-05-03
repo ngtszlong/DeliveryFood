@@ -75,20 +75,24 @@ public class FoodAdapter extends RecyclerView.Adapter<FoodAdapter.ViewHolder> {
         holder.cv_order.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                getcurrenttime();
-                String uid = user.getUid();
-                order.setRestaurant_No(food.getRestaurant_No());
-                order.setName_chi(food.getName_chi());
-                order.setName_eng(food.getName_eng());
-                order.setUid(uid);
-                order.setPrice(food.getPrice());
-                order.setTime(str);
-                order.setRestaurantname_eng(food.getRestaurant_eng());
-                order.setRestaurantname_chi(food.getRestaurant_chi());
-                FirebaseDatabase database = FirebaseDatabase.getInstance();
-                DatabaseReference reference = database.getReference("Order");
-                reference.child(uid).child(str).setValue(order);
-                Toast.makeText(holder.itemView.getContext(), R.string.You_have_been_order, Toast.LENGTH_SHORT).show();
+                if (fAuth.getCurrentUser() == null) {
+                    Toast.makeText(context, R.string.login_first, Toast.LENGTH_SHORT).show();
+                }else{
+                    getcurrenttime();
+                    String uid = user.getUid();
+                    order.setRestaurant_No(food.getRestaurant_No());
+                    order.setName_chi(food.getName_chi());
+                    order.setName_eng(food.getName_eng());
+                    order.setUid(uid);
+                    order.setPrice(food.getPrice());
+                    order.setTime(str);
+                    order.setRestaurantname_eng(food.getRestaurant_eng());
+                    order.setRestaurantname_chi(food.getRestaurant_chi());
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    DatabaseReference reference = database.getReference("Order");
+                    reference.child(uid).child(str).setValue(order);
+                    Toast.makeText(holder.itemView.getContext(), R.string.You_have_been_order, Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
